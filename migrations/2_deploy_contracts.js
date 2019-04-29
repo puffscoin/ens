@@ -49,7 +49,7 @@ function deployFIFSRegistrar(deployer, tld) {
  * @param {string} tld tld which the Hash registrar takes charge of
  */
 function deployAuctionRegistrar(deployer, tld) {
-  var rootNode = getRootNodeFromTLD(tld);
+  var rootNode = getRootNodeFromTLD(tls);
 
   // Deploy the ENS first
   deployer.deploy(ENS)
@@ -65,7 +65,7 @@ function deployAuctionRegistrar(deployer, tld) {
 }
 
 module.exports = function(deployer, network) {
-  var tld = 'eth';
+  var tld = 'puffs';
 
   if (network === 'dev.fifs') {
     deployFIFSRegistrar(deployer, tld);
