@@ -47,7 +47,7 @@ describe('FIFSRegistrar', function() {
 
 	it('registers names', function() {
 		this.slow(300);
-		return registrar.registerAsync(web3.sha3('eth'), accounts[0], {from: accounts[0]})
+		return registrar.registerAsync(web3.sha3('puffs'), accounts[0], {from: accounts[0]})
 			.then(txHash => ens.ownerAsync(0))
 			.then(address => {
 				assert.equal(address, registrar.address);
@@ -59,20 +59,20 @@ describe('FIFSRegistrar', function() {
 	describe("transferring names", function() {
 
 		beforeEach("register an unclaimed name", function() {
-			return registrar.registerAsync(web3.sha3('eth'), accounts[0], {from: accounts[0]})
+			return registrar.registerAsync(web3.sha3('puffs'), accounts[0], {from: accounts[0]})
 				.then(txHash => ens.ownerAsync(utils.node))
 				.then(address => assert.equal(address, accounts[0]));
 		});
 
 		it("transfers the name you own", function() {
 			this.slow(200);
-			return registrar.registerAsync(web3.sha3('eth'), accounts[1], {from: accounts[0]})
+			return registrar.registerAsync(web3.sha3('puffs'), accounts[1], {from: accounts[0]})
 				.then(txHash => ens.ownerAsync(utils.node))
 				.then(address => assert.equal(address, accounts[1]));
 		});
 
 		it('forbids transferring the name you do not own', function() {
-			return registrar.registerAsync(web3.sha3('eth'), accounts[1], {from: accounts[1]})
+			return registrar.registerAsync(web3.sha3('puffs'), accounts[1], {from: accounts[1]})
 				.then(
 					txHash => { throw(new Error("expected to be forbidden")); },
 					err => assert.ok(err, err)
