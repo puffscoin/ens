@@ -749,7 +749,7 @@ var auctionRegistrarContract = web3.eth.contract([
     "type": "event"
   }
 ]);
-var ethRegistrar = auctionRegistrarContract.at(ens.owner(namehash('eth')));
+var ethRegistrar = auctionRegistrarContract.at(ens.owner(namehash('puffs')));
 
 var deedContract = web3.eth.contract([
   {
