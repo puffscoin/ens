@@ -425,8 +425,8 @@ describe('PublicResolver', function() {
 	});
 
 	describe('setText function', function() {
-	    var url = "https://ethereum.org";
-	    var url2 = "https://github.com/ethereum";
+	    var url = "https://puffscoin.leafycauldronapothecary.com";
+	    var url2 = "https://github.com/puffscoin";
 
 		it('permits setting text by owner', function() {
 			return resolver.setTextAsync(utils.node, "url", url, {from: accounts[0]});
@@ -473,8 +473,8 @@ describe('PublicResolver', function() {
 	});
 
 	describe('text function', function() {
-	    var url = "https://ethereum.org";
-	    var email = "test@ethereum.org";
+	    var url = "https://puffscoin.leafycauldronapothecary.com";
+	    var email = "abvhiael@leafycauldronapothecary.com";
 
 		it('returns empty string when fetching nonexistent addresses', function() {
 			this.slow(200);
