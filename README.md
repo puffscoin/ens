@@ -1,8 +1,8 @@
 # ENS
 
-[![Build Status](https://travis-ci.org/ethereum/ens.svg?branch=master)](https://travis-ci.org/ethereum/ens)
+[![Build Status](https://travis-ci.org/puffscoin/ens.svg?branch=master)](https://travis-ci.org/puffscoin/ens)
 
-Implementations for registrars and local resolvers for the Ethereum Name Service.
+Implementations for registrars and local resolvers for the PUFFScoin Name Service (ENS).
 
 For documentation of the ENS system, see [docs.ens.domains](https://docs.ens.domains/).
 
