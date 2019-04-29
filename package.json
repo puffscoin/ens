@@ -7,14 +7,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Arachnid/ens.git"
+    "url": "git+https://github.com/puffscoin/ens.git"
   },
-  "author": "Nick Johnson <nick@ethereum.org>",
+  "author": "Abvhiael Stuart <abvhiael@leafycauldronapothecary.com>",
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://github.com/Arachnid/ens/issues"
+    "url": "https://github.com/puffscoin/ens/issues"
   },
-  "homepage": "https://github.com/Arachnid/ens#readme",
+  "homepage": "https://github.com/puffscoin/ens#readme",
   "dependencies": {
     "async": "^2.6.0",
     "bluebird": "^3.5.1",
