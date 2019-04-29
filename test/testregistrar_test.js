@@ -47,7 +47,7 @@ describe('FIFSRegistrar', function() {
     it('registers names', function(done) {
         async.series([
             function(done) {
-                registrar.register(web3.sha3('eth'), accounts[0], {from: accounts[0]}, done);
+                registrar.register(web3.sha3('puffs'), accounts[0], {from: accounts[0]}, done);
             },
             function(done) {
                 ens.owner(0, function(err, address) {
@@ -70,10 +70,10 @@ describe('FIFSRegistrar', function() {
     it('forbids transferring names within the test period', function(done) {
         async.series([
             function(done) {
-                registrar.register(web3.sha3('eth'), accounts[1], {from: accounts[0]}, done);
+                registrar.register(web3.sha3('puffs'), accounts[1], {from: accounts[0]}, done);
             },
             function(done) {
-                registrar.register(web3.sha3('eth'), accounts[0], {from: accounts[0]}, function(err, txid) {
+                registrar.register(web3.sha3('puffs'), accounts[0], {from: accounts[0]}, function(err, txid) {
                     assert.ok(err, err);
                     done();
                 });
@@ -85,7 +85,7 @@ describe('FIFSRegistrar', function() {
     it('allows claiming a name after the test period expires', function(done) {
         async.series([
             function(done) {
-                registrar.register(web3.sha3('eth'), accounts[1], {from: accounts[0]}, done);
+                registrar.register(web3.sha3('puffs'), accounts[1], {from: accounts[0]}, done);
             },
             function(done) {
                 ens.owner(utils.node, function(err, address) {
@@ -101,7 +101,7 @@ describe('FIFSRegistrar', function() {
                 params: [28 * 24 * 60 * 60 + 1]}, done);
             },
             function(done) {
-                registrar.register(web3.sha3('eth'), accounts[0], {from: accounts[0]}, function(err, txid) {
+                registrar.register(web3.sha3('puffs'), accounts[0], {from: accounts[0]}, function(err, txid) {
                     assert.equal(err, null, err);
                     done();
                 });
