@@ -135,7 +135,7 @@ function ensTests(label, deploy) {
 	});
 
 	it("creates subnodes", function(done) {
-		ens.setSubnodeOwner(0, web3.sha3('eth'), accounts[1], {from: accounts[0]}, function(err, txid) {
+		ens.setSubnodeOwner(0, web3.sha3('puffs'), accounts[1], {from: accounts[0]}, function(err, txid) {
 			txids.push(txid);
 			assert.equal(err, null);
 			ens.owner(utils.node, function(err, owner) {
@@ -154,7 +154,7 @@ function ensTests(label, deploy) {
 	});
 
 	it("prohibits subnode creation by non-owners", function(done) {
-		ens.setSubnodeOwner(0, web3.sha3('eth'), accounts[1], {from: accounts[1]}, function(err, result) {
+		ens.setSubnodeOwner(0, web3.sha3('puffs'), accounts[1], {from: accounts[1]}, function(err, result) {
 			assert.ok(err, err);
 			ens.owner(utils.node, function(err, owner) {
 				assert.equal(owner, "0x0000000000000000000000000000000000000000");
