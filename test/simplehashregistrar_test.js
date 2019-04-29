@@ -42,7 +42,7 @@ describe('SimpleHashRegistrar', function() {
 	var launchLength = days(7 * 8);
 	var bid;
 
-	var dotEth = web3.sha3('0000000000000000000000000000000000000000000000000000000000000000' + web3.sha3('eth').slice(2), {encoding: 'hex'});
+	var dotEth = web3.sha3('0000000000000000000000000000000000000000000000000000000000000000' + web3.sha3('puffs').slice(2), {encoding: 'hex'});
 	var nameDotEth = web3.sha3(dotEth + web3.sha3('name').slice(2), {encoding: 'hex'});
 
 	before(function() {
@@ -756,8 +756,8 @@ describe('SimpleHashRegistrar', function() {
 			.then((result) => assert.equal(result[0], 0))		
 			.then((result) => eth.getBalanceAsync(owner))
 			.then((balance) => {
-				let returnedEther = web3.fromWei(Number(balance.toFixed() - winnerBalance), 'ether');
-				console.log('\t Name released and', returnedEther, 'ether returned to deed owner');
+				let returnedEther = web3.fromWei(Number(balance.toFixed() - winnerBalance), 'puffs');
+				console.log('\t Name released and', returnedEther, 'PUFFS returned to deed owner');
 				assert.equal(1 - returnedEther < 0.01, true);
 			})
 			.catch((err) => assert.fail("No exception expected here, but got " + err.toString()))
@@ -783,7 +783,7 @@ describe('SimpleHashRegistrar', function() {
 			.then((done) => registrar.unsealBidAsync(web3.sha3('name'), 1e18, 1, {from: accounts[0], gas: 500000}))
 			.then((done) => advanceTimeAsync(days(2) + 60))
 			.then((done) => registrar.finalizeAuctionAsync(web3.sha3('name'), {from: accounts[0]}))
-			.then((done) => ens.setSubnodeOwnerAsync(0, web3.sha3('eth'), accounts[0], {from: accounts[0]}))
+			.then((done) => ens.setSubnodeOwnerAsync(0, web3.sha3('puffs'), accounts[0], {from: accounts[0]}))
 			.then((done) => registrar.releaseDeedAsync(web3.sha3('name'), {from: accounts[0]}))
 			.asCallback(done);
 	});
@@ -839,7 +839,7 @@ describe('SimpleHashRegistrar', function() {
 			.then((done) => advanceTimeAsync(days(3) + 60))
 			.then((done) => registrar.unsealBidAsync(web3.sha3('name'), 1e18, 1, {from: accounts[0], gas: 500000}))
 			.then((done) => advanceTimeAsync(days(2) + 60))
-			.then((done) => ens.setSubnodeOwnerAsync(0, web3.sha3('eth'), accounts[0], {from: accounts[0]}))
+			.then((done) => ens.setSubnodeOwnerAsync(0, web3.sha3('puffs'), accounts[0], {from: accounts[0]}))
 			.then((done) => registrar.finalizeAuctionAsync(web3.sha3('name'), {from: accounts[0]}))
 			.asCallback(done);
 	});
@@ -896,7 +896,7 @@ describe('SimpleHashRegistrar', function() {
 			.then((done) => registrar.unsealBidAsync(web3.sha3('name'), 1e18, 1, {from: accounts[0], gas: 500000}))
 			.then((done) => advanceTimeAsync(days(2) + 60))
 			.then((done) => registrar.finalizeAuctionAsync(web3.sha3('name'), {from: accounts[0], gas: 500000}))
-			.then((done) => ens.setSubnodeOwnerAsync(0, web3.sha3('eth'), accounts[0], {from: accounts[0], gas: 500000}))
+			.then((done) => ens.setSubnodeOwnerAsync(0, web3.sha3('puffs'), accounts[0], {from: accounts[0], gas: 500000}))
 			.then((done) => registrar.invalidateNameAsync('name', {from: accounts[0], gas: 500000}))
 			.asCallback(done);
 	});
@@ -1173,7 +1173,7 @@ describe('SimpleHashRegistrar', function() {
 			},
 			// Update ENS with a new registrar
 			function(done) {
-				ens.setSubnodeOwner(0, web3.sha3('eth'), newRegistrar.address, {from: accounts[0]}, done);
+				ens.setSubnodeOwner(0, web3.sha3('puffs'), newRegistrar.address, {from: accounts[0]}, done);
 			},
 			// Transfer the deed
 			function(done) {
@@ -1466,7 +1466,7 @@ describe('SimpleHashRegistrar', function() {
 			// Advance past soft launch
 			function(done) { advanceTime(launchLength, done); },
 			// Start an auction for 'name'
-			function(done) { ens.setSubnodeOwner(0, web3.sha3('eth'), accounts[0], {from: accounts[0]}, done);},
+			function(done) { ens.setSubnodeOwner(0, web3.sha3('puffs'), accounts[0], {from: accounts[0]}, done);},
 			function(done) {
 				registrar.startAuction(web3.sha3('name'), {from: accounts[0]}, function(err, txid) {
 					assertIsContractError(err);
