@@ -1,7 +1,7 @@
 {
   "name": "ens",
   "version": "0.1.1",
-  "description": "Implementations for registrars and local resolvers for the Ethereum Name Service",
+  "description": "Implementations for registrars and local resolvers for the PUFFScoin Name Service (ENS)",
   "scripts": {
     "test": "mocha"
   },
