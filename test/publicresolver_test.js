@@ -51,7 +51,7 @@ describe('PublicResolver', function() {
 			})
 			.then(contract => {
 				resolver = Promise.promisifyAll(contract);
-				return ens.setSubnodeOwnerAsync(0, web3.sha3('eth'), accounts[0], {from: accounts[0]});
+				return ens.setSubnodeOwnerAsync(0, web3.sha3('puffs'), accounts[0], {from: accounts[0]});
 			});
 	});
 
