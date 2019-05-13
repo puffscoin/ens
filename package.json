@@ -18,7 +18,7 @@
   "dependencies": {
     "async": "^2.6.0",
     "bluebird": "^3.5.1",
-    "eth-ens-namehash": "^1.0.2",
+    "puffs-ens-namehash": "^1.0.2",
     "ethereumjs-testrpc": "^6.0.3",
     "solc": "^0.4.20",
   },
