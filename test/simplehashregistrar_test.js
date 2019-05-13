@@ -212,7 +212,7 @@ describe('SimpleHashRegistrar', function() {
 				});
 			},	
 			function(done) {
-				registrar.entries(web3.sha3('ethereum'), function(err, result) {
+				registrar.entries(web3.sha3('puffscoin'), function(err, result) {
 					assert.equal(err, null, err);
 					// Should be status 5 (unavailable)
 					assert.equal(result[0], 5); 
@@ -442,8 +442,8 @@ describe('SimpleHashRegistrar', function() {
 				registrar.entries(web3.sha3('name'), function(err, result) {
 					assert.equal(err, null, err);
 					assert.equal(result[0], 2); // status == Owned
-					assert.equal(result[3], 1.5e18); // value = 1.5 ether
-					assert.equal(result[4], 2e18); // highestBid = 2 ether
+					assert.equal(result[3], 1.5e18); // value = 1.5 puffscoin
+					assert.equal(result[4], 2e18); // highestBid = 2 puffscoin
 					var deed = web3.eth.contract(deedABI).at(result[1]);
 					async.series([
 						// Check the owner is correct
