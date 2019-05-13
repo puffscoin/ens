@@ -14,20 +14,14 @@ The DApp and the twitter bot have built in lists of common names, drawn from an 
 
 What is the disguise amount / extra amount?
 -------------------------------------------
-Although it's difficult for someone to determine what name you are bidding on, in some circumstances it's possible to either determine the exact name, or narrow it down to one of several. The disguise amount allows you to send extra ether along with your bid, to disguise the true amount of your bid. This ether is returned to you as soon as you reveal your bid.
+Although it's difficult for someone to determine what name you are bidding on, in some circumstances it's possible to either determine the exact name, or narrow it down to one of several. The disguise amount allows you to send extra puffs along with your bid, to disguise the true amount of your bid. This ether is returned to you as soon as you reveal your bid.
 
 Which wallets and DApps support ENS so far?
 -------------------------------------------
 
-MyEtherWallet supports both registering names via the auction process and sending funds and interacting with contracts identified by their names.
+MyEtherWallet supports both registering names via the auction process and sending funds and interacting with contracts identified by their names. Our goal is to ensure that either MEW allows for this process along the PUFFScoin network aswell, or we will provide PUFFScoin specific MEW build with this support.
 
-Metamask supports sending funds to ENS names.
-
-Mist is working on ENS support and should announce it soon.
-
-LEth is working on ENS support and should announce it soon.
-
-Status is working on ENS support and should announce it soon.
+Metamask supports sending funds to ENS names, and either through branded adaptation or via direct integration, we hope to provide .puffs support via MetaMask or attenuant service..
 
 Why does it say my name isn't available yet?
 --------------------------------------------
@@ -56,7 +50,7 @@ I bid on an auction and didn't win; why don't I see the refund in my transaction
 
 Refunds are sent as part of reveal transactions - when you reveal, if someone already outbid you, or when you're outbid later, if not - and as part of finalise transactions. They're not separate transactions, so they don't show up as such. If you're using etherscan, check the 'internal transctions' tab to find your refund information.
 
-I bid on one name, but Etherscan shows me as bidding on other name(s)! Why?
+I bid on one name, but the PUFFScoin block explorer shows me as bidding on other name(s)! Why?
 ---------------------------------------------------------------------------
 
 The registrar DApp opens up to three randomly selected auctions as 'chaff' every time you place a bid, to make it more difficult for people to guess what you are bidding on. The names you see are not necessarily the one you're bidding on; that's contained in the sealed bid hash that was submitted.
@@ -73,35 +67,35 @@ Yes, you can update the addresses and other resources pointed to by your name at
 
 How much do I have to deposit if I'm the only bidder?
 -----------------------------------------------------
-If only one bid is revealed, that bidder deposits 0.01 ether, the minimum bid. The remainder of their bid is refunded as soon as they finalise the auction.
+If only one bid is revealed, that bidder deposits 0.01 puffs, the minimum bid. The remainder of their bid is refunded as soon as they finalise the auction.
 
-Can I register a TLD of my own in the ENS?
+Can I register a TLD of my own in the PUFFScoin-ENS?
 ------------------------------------------
 
-No, TLDs are restricted to only .eth (on mainnet), or .eth and .test (on Ropsten), plus any special purpose TLDs such as those required to permit reverse lookups. There are no immediate plans to invite proposals for additional TLDs. In large part this is to reduce the risk of a namespace collision with the IANA DNS namespace.
+No, TLDs are currently restricted to only .puffs, plus any special purpose TLDs such as those required to permit reverse lookups. There are no immediate plans to invite proposals for additional TLDs. In large part this is to reduce the risk of a namespace collision with the IANA DNS namespace.
 
-Instead of burning funds in the auction for bidding costs and penalties, shouldn’t they be donated to the Ethereum Foundation?
+Instead of burning funds in the auction for bidding costs and penalties, shouldn’t they be donated to the PUFFScoin Foundation?
 ------------------------------------------------------------------------------------------------------------------------------
 
 Burning is fairly rare in the current registrar; it only burns fees if you reveal an illegal bid, or fail to reveal a bid during the reveal period. In all other circumstances they’re refunded to users, either when you’re outbid or when you relinquish the name. A small portion (0.5%) of the bids are burned with the intent of creating a cost for a large amount of domains or for highly valuable domains without the intention of buying them.
 
-Burning fees is impartial, and avoids both political concerns over the destination of the funds, and perverse incentives for the beneficiary of the fees. The value of the ether burned is not destroyed, but rather equally distributed among all ether holders.
+Burning fees is impartial, and avoids both political concerns over the destination of the funds, and perverse incentives for the beneficiary of the fees. 
 
-Who will own the ENS rootnode?  What powers does that grant them?
+Who will own the PUFFScoin-ENS rootnode?  What powers does that grant them?
 -----------------------------------------------------------------
 
-The root node will initially be owned by a multisig contract, with keys held by trustworthy individuals in the Ethereum community. The exact makeup of this has not yet been decided on. We expect that this will be very hands-off, with the root ownership only used to effect administrative changes, such as the introduction of a new TLD, or to recover from an emergency such as a critical vulnerability in a TLD registrar.
+The root node will initially be owned by a multisig contract, with keys held by individuals in the PUFFScoin Core Development Group. The exact makeup of this has not yet been decided on. This will be very hands-off, with the root ownership only used to effect administrative changes, such as the introduction of a new TLD, or to recover from an emergency such as a critical vulnerability in a TLD registrar.
 
-In the long term, the plan is to define a governance process for operations on the root node, and transfer ownership to a contract that enforces this process. 
+In the long term, the plan is to define a governance process for operations on the root node, and transfer ownership to a contract that enforces this process autonomously. 
 
-Since the owner of a node can change ownership of any subnode, the owner of the root can change any node in the ENS tree.
+Since the owner of a node can change ownership of any subnode, the owner of the root can change any node in the PUFFScoin-ENS tree.
 
 What about foreign characters? What about upper case letters? Is any unicode character valid? 
 ----------------------------------------------------------------------------------------------
 
 Since the ENS contracts only deal with hashes, they have no direct way to enforce limits on what can be registered; character length restrictions are implemented by allowing users to challenge a short name by providing its preimage to prove it’s too short.
 
-This means that you can in theory register both ‘foo.eth’ and ‘FOO.eth’, or even <picture of my cat>.eth. However, resolvers such as browsers and wallets should apply the nameprep algorithm to any names users enter before resolving; as a result, names that are not valid outputs of nameprep will not be resolvable by standard resolvers, making them effectively useless. DApps that assist users with registering names should prevent users from registering unresolvable names by using nameprep to preprocess names being requested for registration. 
+This means that you can in theory register both ‘times.puffs’ and ‘TIMES.puffs’, or even <picture of my bong>.puffs. However, resolvers such as browsers and wallets should apply the nameprep algorithm to any names users enter before resolving; as a result, names that are not valid outputs of nameprep will not be resolvable by standard resolvers, making them effectively useless. DApps that assist users with registering names should prevent users from registering unresolvable names by using nameprep to preprocess names being requested for registration. 
 
 Nameprep isn't enforced in the ENS system, is this a security/spoofing/phishing concern? 
 -----------------------------------------------------------------------------------------
@@ -129,13 +123,13 @@ What kinds of behaviours are likely to result in losing ownership of a name?
 
 This is the most important aspect to be decided on the Permanent registrar and the one we want more open debate. At minimum we want the owner of a name to have to execute some periodical transaction, just to prove that name hasn’t been abandoned or keys have been lost. This transaction would probably also require additional ether to be locked or burned. The method to which that amount is calculated is yet to be determined but would probably be dependent on some (but not necessarily all) of these factors:
 
- - The amount of ethers the domain was bought for originally
+ - The amount of PUFFScoins the domain was bought for originally
  - The average cost of a domain back when it was first bought 
  - The average cost of a domain at the moment of renewal
  - The current market value of the domain (to be calculated with some auction method)
  - Other factors to be discussed
 
-Just like the current model, this “fee” would not go to the Ethereum Foundation or any third party, but be locked or burned. Ideally, this financial (opportunity and liquidity) cost will make name squatting unprofitable – or at least make the name reselling market a dynamic and competitive one, focused on quick turnout and not on holding names long term for as much money as possible.
+Just like the current model, this “fee” would not go to the PUFFScoin Core Development Foundation or any third party, but be locked or burned. Ideally, this financial (opportunity and liquidity) cost will make name squatting unprofitable – or at least make the name reselling market a dynamic and competitive one, focused on quick turnout and not on holding names long term for as much money as possible.
 
 Another very possible option creating some sort of dispute resolution process for names, to ensure the “principle of least surprise” but this is a controversial idea and there are no clear ideas on how this process could be achieved in a fair way without risks of centralization and abuse of power.
 
