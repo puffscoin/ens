@@ -42,8 +42,8 @@ describe('SimpleHashRegistrar', function() {
 	var launchLength = days(7 * 8);
 	var bid;
 
-	var dotEth = web3.sha3('0000000000000000000000000000000000000000000000000000000000000000' + web3.sha3('puffs').slice(2), {encoding: 'hex'});
-	var nameDotEth = web3.sha3(dotEth + web3.sha3('name').slice(2), {encoding: 'hex'});
+	var dotPuffs = web3.sha3('0000000000000000000000000000000000000000000000000000000000000000' + web3.sha3('puffs').slice(2), {encoding: 'hex'});
+	var nameDotPuffs = web3.sha3(dotPuffs + web3.sha3('name').slice(2), {encoding: 'hex'});
 
 	before(function() {
 		this.timeout(30000);
@@ -61,7 +61,7 @@ describe('SimpleHashRegistrar', function() {
 			function(done) {
 				registrar = web3.eth.contract(registrarABI).new(
 				    ens.address,
-				    dotEth,
+				    dotPuffs,
 				    0,
 				    {
 				    	from: accounts[0],
@@ -89,7 +89,7 @@ describe('SimpleHashRegistrar', function() {
 						}
 					});
 			},
-			function(done) { ens.setSubnodeOwner(0, web3.sha3('eth'), registrar.address, {from: accounts[0]}, done);}
+			function(done) { ens.setSubnodeOwner(0, web3.sha3('puffs'), registrar.address, {from: accounts[0]}, done);}
 		], done);
 	});
 
@@ -172,7 +172,7 @@ describe('SimpleHashRegistrar', function() {
 				});
 			},
 			function(done) { 
-				registrar.getAllowedTime(web3.sha3('ethereum'), function(err, result){ 
+				registrar.getAllowedTime(web3.sha3('puffscoin'), function(err, result){ 
 					assert.equal(err, null, err);
 					// 'ethereum' should be available in 18 days
 					assert.equal(Math.round((Number(result)-registryStarted)/days(1)), 18);
@@ -190,7 +190,7 @@ describe('SimpleHashRegistrar', function() {
 				});
 			},	
 			function(done) {
-				registrar.startAuction(web3.sha3('ethereum'), {from: accounts[0]}, function(err, result) {
+				registrar.startAuction(web3.sha3('puffscoin'), {from: accounts[0]}, function(err, result) {
 					// Should NOT be able to open this
 					assertIsContractError(err);
 					done();
@@ -231,7 +231,7 @@ describe('SimpleHashRegistrar', function() {
 				advanceTime(days(30), done); 
 			},	
 			function(done) {
-				registrar.startAuction(web3.sha3('ethereum'), {from: accounts[0]}, function(err, result) {
+				registrar.startAuction(web3.sha3('puffscoin'), {from: accounts[0]}, function(err, result) {
 					// Should be able to open this now
 					assert.equal(err, null)
 					done();
@@ -246,7 +246,7 @@ describe('SimpleHashRegistrar', function() {
 				});
 			},	
 			function(done) {
-				registrar.entries(web3.sha3('ethereum'), function(err, result) {
+				registrar.entries(web3.sha3('puffscoin'), function(err, result) {
 					assert.equal(err, null, err);
 					// Should be status 1 (Auction)
 					assert.equal(result[0], 1); 
