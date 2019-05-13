@@ -4,7 +4,7 @@ var fs = require('fs');
 var Promise = require('bluebird');
 var solc = require('solc');
 var Web3 = require('web3');
-var namehash = require('eth-ens-namehash');
+var namehash = require('puffs-ens-namehash');
 
 var TestRPC = require('ethereumjs-testrpc');
 var web3 = new Web3();
