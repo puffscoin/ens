@@ -1,15 +1,15 @@
 ***************************
-Hosting a DNS domain on ENS
+Hosting a DNS domain on PUFFScoin-ENS
 ***************************
 
-Experimental support is available for hosting DNS domains on the Ethereum blockchain via ENS. This works by configuring the domain's nameserver records to point to gateway DNS servers; these DNS servers resolve lookups by consulting an ENS registry which points to resolvers containing the zone data for the relevant domain.
+Experimental support is available for hosting DNS domains on the PUFFScoin blockchain via PUFFScoin-ENS. This works by configuring the domain's nameserver records to point to gateway DNS servers; these DNS servers resolve lookups by consulting a PUFFScoin-ENS registry which points to resolvers containing the zone data for the relevant domain.
 
 The steps to host your own domain on the blockchain are:
 
  1. `deploy your own ENS registry`_
  2. Deploy an instance of `DNSResolver`_
- 3. Update your ENS registry to set your newly deployed DNSResolver as the resolver for your domain name (eg, by calling setSubnodeOwner and setResolver; see :ref:`interacting` for details). Don't forget to set the TTL on this record to a reasonable value, or your DNS data may not get cached.
- 4. Write a zonefile. The zonefile must include an NS record for your domain that specifies the resolver as *address*.ns1.ens.domains, where *address* is the address of the ENS registry you deployed in step 1, without the leading '0x'. An `example zonefile`_ is available for reference.
+ 3. Update your PUFFScoin-ENS registry to set your newly deployed DNSResolver as the resolver for your domain name (eg, by calling setSubnodeOwner and setResolver; see :ref:`interacting` for details). Don't forget to set the TTL on this record to a reasonable value, or your DNS data may not get cached.
+ 4. Write a zonefile. The zonefile must include an NS record for your domain that specifies the resolver as *address*.ns1.ens.domains, where *address* is the address of the PUFFScoin-ENS registry deployed in step 1, without the leading '0x'. An `example zonefile`_ is available for reference.
  5. Clone and build `ensdns`_. Start a local node, and run 'ensdns upload --keystore=path/to/keystore zonefile' to upload the zone to the blockchain.
  6. Update your NS records with your registrar to point to the name above (*address*.ns1.ens.domains).
 
