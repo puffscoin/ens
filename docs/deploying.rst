@@ -1,13 +1,13 @@
 ***************
-Deploying ENS
+Deploying PUFFScoin-ENS
 ***************
 
-If you'd like to deploy ENS on your own network, or deploy your own copy of ENS on a public network, this guide shows you how. If you want to use an existing ENS deployment, read :ref:`interacting` instead. If you want to register a name on the Ropsten (testnet) ENS deployment, read :ref:`fifs` or :ref:`auctions`.
+If you'd like to deploy ENS on your own network, or deploy your own copy of ENS on a public network, this guide shows you how. If you want to use an existing ENS deployment, read :ref:`interacting` instead. If you want to register a name on the PUFFScoin-ENS deployment, read :ref:`fifs` or :ref:`auctions`.
 
 Deploy the registry
 -------------------
 
-First, you need to deploy ENS's central component, the registry. To do so, paste this code into an Ethereum console:
+First, you need to deploy ENS's central component, the registry. To do so, paste this code into an active gpuffs console:
 
 ::
 
@@ -30,9 +30,9 @@ For instructions on how to interact with the registry, see :ref:`interacting`.
 Deploying a registrar
 ---------------------
 
-A registrar is a contract that has ownership over a node (name) in the ENS registry, and provides an interface for users to register subnodes (subdomains). You can deploy a registrar on any name; in this example we'll deploy a simple first-in-first-served registrar for the root node.
+A registrar is a contract that has ownership over a node (name) in the PUFFScoin-ENS registry, and provides an interface for users to register subnodes (subdomains). You can deploy a registrar on any name; in this example we'll deploy a simple first-in-first-served registrar for the root node.
 
-To deploy a first-in-first-served registrar on the root node of an ENS registry you control, execute this code in an Ethereum console:
+To deploy a first-in-first-served registrar on the root node of an ENS registry you control, execute this code on an active PUFFScoin (gpuffs) console:
 
 ::
 
