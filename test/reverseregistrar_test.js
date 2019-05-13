@@ -1,6 +1,6 @@
 var assert = require('assert');
 var async = require('async');
-var namehash = require('eth-ens-namehash');
+var namehash = require('puffs-ens-namehash');
 var Promise = require('bluebird');
 
 var utils = require('./utils.js');
