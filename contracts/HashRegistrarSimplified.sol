@@ -18,8 +18,8 @@ import './ENS.sol';
 
 
 /**
- * @title Deed to hold ether in exchange for ownership of a node
- * @dev The deed can be controlled only by the registrar and can only send ether back to the owner.
+ * @title Deed to hold puffs in exchange for ownership of a node
+ * @dev The deed can be controlled only by the registrar and can only send puffs back to the owner.
  */
 contract Deed {
     address public registrar;
@@ -113,7 +113,7 @@ contract Registrar {
     uint32 constant revealPeriod = 48 hours;
     uint32 public constant launchLength = 8 weeks;
 
-    uint constant minPrice = 0.01 ether;
+    uint constant minPrice = 0.01 puffs;
     uint public registryStarted;
 
     event AuctionStarted(bytes32 indexed hash, uint registrationDate);
@@ -198,7 +198,7 @@ contract Registrar {
      * contains information about the bid, including the bidded hash, the bid amount, and a random
      * salt. Bids are not tied to any one auction until they are revealed. The value of the bid
      * itself can be masqueraded by sending more than the value of your actual bid. This is
-     * followed by a 48h reveal period. Bids revealed after this period will be burned and the ether unrecoverable.
+     * followed by a 48h reveal period. Bids revealed after this period will be burned and the PUFFScoins bid unrecoverable.
      * Since this is an auction, it is expected that most public hashes, like known domains and common dictionary
      * words, will have multiple bidders pushing the price up.
      *
@@ -338,7 +338,7 @@ contract Registrar {
 
     /**
      * @dev After some time, or if we're no longer the registrar, the owner can release
-     *      the name and get their ether back.
+     *      the name and get their PUFFScoins back.
      *
      * @param _hash The node to release
      */
@@ -392,13 +392,13 @@ contract Registrar {
 
     /**
      * @dev Allows anyone to delete the owner and resolver records for a (subdomain of) a
-     *      name that is not currently owned in the registrar. If passing, eg, 'foo.bar.eth',
-     *      the owner and resolver fields on 'foo.bar.eth' and 'bar.eth' will all be cleared.
+     *      name that is not currently owned in the registrar. If passing, eg, 'high.times.puffs',
+     *      the owner and resolver fields on 'high.times.puffs' and 'times.puffs' will all be cleared.
      *
      * @param labels A series of label hashes identifying the name to zero out, rooted at the
      *        registrar's root. Must contain at least one element. For instance, to zero 
-     *        'foo.bar.eth' on a registrar that owns '.eth', pass an array containing
-     *        [keccak256('foo'), keccak256('bar')].
+     *        'high.times.puffs' on a registrar that owns '.puffs', pass an array containing
+     *        [keccak256('high'), keccak256('times')].
      */
     function eraseNode(bytes32[] labels) public {
         require(labels.length != 0);
