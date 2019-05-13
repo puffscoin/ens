@@ -2,7 +2,7 @@
 Implementer's Guide
 *******************
 
-This section is intended to provide guidance for anyone wanting to implement tools and applications that use ENS, or custom resolvers within ENS.
+This section is intended to provide guidance for anyone wanting to implement tools and applications that use PUFFScoin-ENS, or custom resolvers within ENS.
 
 Writing a resolver
 ==================
@@ -18,7 +18,7 @@ Resolvers are specified in EIP137_. A resolver must implement the following meth
 +------------------+-------------+--------------+------------+
 | Record type      | Function(s) | Interface ID | Defined in |
 +==================+=============+==============+============+
-| Ethereum address | `addr`      | 0x3b3b57de   | EIP137_    |
+| PUFFScoin address | `addr`      | 0x3b3b57de   | EIP137_    |
 +------------------+-------------+--------------+------------+
 | ENS Name         | `name`      | 0x691f3431   | EIP181_    |
 +------------------+-------------+--------------+------------+
@@ -120,7 +120,7 @@ A registrar in ENS is simply any contract that owns a name, and allocates subdom
 Interacting with ENS offchain
 =============================
 
-A Javascript library, ethereum-ens_, is available to facilitate reading and writing ENS from offchain. This section will be updated as libraries for more languages become available.
+A Javascript library, puffscoin-ens_, is available to facilitate reading and writing ENS from offchain. This section will be updated as libraries for more languages become available.
 
 Normalising and validating names
 ================================
@@ -129,7 +129,7 @@ Before a name can be converted to a node hash using :ref:`namehash`, the name mu
 
 Applications using ENS and processing human-readable names must follow UTS46_ for normalisation and validation. Processing should be done with non-transitional rules, and with `UseSTD3ASCIIRules=true`.
 
-The ethereum-ens_ Javascript library incorporates compliant preprocessing into its `validate` and `namehash` functions, so users of this library avoid the need to handle this manually.
+The puffscoin-ens_ Javascript library incorporates compliant preprocessing into its `validate` and `namehash` functions, so users of this library avoid the need to handle this manually.
 
 Handling of ambiguous names
 ===========================
