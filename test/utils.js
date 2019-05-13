@@ -31,7 +31,7 @@ function compileContract(filenames, sourceRoot) {
 }
 
 module.exports = {
-	node: namehash('eth'),
+	node: namehash('puffs'),
 	compileContract: compileContract,
 	deployENS: function (account, done) {
 		if (ensCode == null)
