@@ -145,7 +145,7 @@ function ensTests(label, deploy) {
 					assert.equal(logs.length, 1);
 					var args = logs[0].args;
 					assert.equal(args.node, "0x0000000000000000000000000000000000000000000000000000000000000000");
-					assert.equal(args.label, web3.sha3('eth'));
+					assert.equal(args.label, web3.sha3('puffs'));
 					assert.equal(args.owner, accounts[1]);
 					done();
 				});
