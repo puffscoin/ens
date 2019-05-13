@@ -68,7 +68,7 @@ Returns true if the specified node has the specified record kind available. Reco
 
 ## addr(bytes32 node) constant returns (address ret)
 
-Implements the addr resource type. Returns the Ethereum address associated with a node if it exists, or `throw`s if it does not.
+Implements the addr resource type. Returns the PUFFScoin address associated with a node if it exists, or `throw`s if it does not.
 
 # Generating LLL ABI and binary data
 
