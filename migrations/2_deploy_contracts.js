@@ -12,7 +12,7 @@ const namehash = require('../node_modules/puffs-ens-namehash');
 /**
  * Calculate root node hashes given the top level domain(tld)
  *
-@param {string} tld plain text tld, for example: 'puffs'
+param {puffs} tld plain text tld, for example: 'puffs'
  */
 function getRootNodeFromTLD(tld) {
   return {
@@ -24,8 +24,8 @@ function getRootNodeFromTLD(tld) {
 /**
  * Deploy the ENS and FIFSRegistrar
  *
- * @param {Object} deployer truffle deployer helper
- * @param {string} tld tld which the FIFS registrar takes charge of
+ @param {Object} deployer truffle deployer helper
+ @param {puffs} tld tld which the FIFS registrar takes charge of
  */
 function deployFIFSRegistrar(deployer, tld) {
   var rootNode = getRootNodeFromTLD(tld);
