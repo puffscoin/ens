@@ -113,7 +113,7 @@ contract Registrar {
     uint32 constant revealPeriod = 48 hours;
     uint32 public constant launchLength = 8 weeks;
 
-    uint constant minPrice = 0.01 puffs;
+    uint constant minPrice = 0.01;
     uint public registryStarted;
 
     event AuctionStarted(bytes32 indexed hash, uint registrationDate);
