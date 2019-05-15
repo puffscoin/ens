@@ -12,7 +12,7 @@ const namehash = require('../node_modules/puffs-ens-namehash');
 /**
  * Calculate root node hashes given the top level domain(tld)
  *
-param {puffs} tld plain text tld, for example: 'puffs'
+@param {puffs} tld plain text tld, for example: 'puffs'
  */
 function getRootNodeFromTLD(tld) {
   return {
