@@ -6,7 +6,7 @@ var solc = require('solc');
 var Web3 = require('web3');
 var namehash = require('puffs-ens-namehash');
 
-var TestRPC = require('ethereumjs-testrpc');
+var TestRPC = require('puffscoinjs-testrpc');
 var web3 = new Web3();
 web3.setProvider(TestRPC.provider());
 
@@ -36,7 +36,7 @@ module.exports = {
 	deployENS: function (account, done) {
 		if (ensCode == null)
 			ensCode = compileContract(['ENS.sol', 'AbstractENS.sol']).contracts['ENS.sol:ENS'];
-		var ens = web3.eth.contract(JSON.parse(ensCode.interface)).new(
+		var ens = web3.puffs.contract(JSON.parse(ensCode.interface)).new(
 		    {
 		    	from: account,
 		     	data: ensCode.bytecode,
@@ -61,7 +61,7 @@ module.exports = {
 			}
 		}
 
-		return web3.eth.contract(ensLLLCode.interface)
+		return web3.puffs.contract(ensLLLCode.interface)
 			.new(
 				{
 					from: account,
