@@ -2,7 +2,7 @@
 User Guide
 **********
 
-This user guide is intended for anyone wanting to register, configure, and update ENS names using a Javascript console and web3.js. Before starting, open up a geth console, download ensutils.js_ or `ensutils-testnet.js`_ to your local machine, and import it into a running Ethereum console:
+This user guide is intended for anyone wanting to register, configure, and update ENS names using a Javascript console and web3.js. Before starting, open up a gpuffs console, download ensutils.js_ to your local machine, and import it into a running PUFFScoin console:
 
 ::
 
@@ -33,7 +33,7 @@ The FIFS registrar's interface is extremely simple, and exposes a method called 
 
 ::
 
-    testRegistrar.register(web3.sha3('myname'), eth.accounts[0], {from: eth.accounts[0]});
+    testRegistrar.register(web3.sha3('myname'), puffs.accounts[0], {from: puffs.accounts[0]});
 
 Once this transaction is mined, assuming the name was not already assigned, it will be assigned to you, and you can proceed to :ref:`interacting`.
 
@@ -42,7 +42,7 @@ Once this transaction is mined, assuming the name was not already assigned, it w
 Registering a name with the auction registrar
 =============================================
 
-Once deployed on mainnet, ENS names will be handed out via an auction process, on the '.eth' top-level domain. A preview of this is available on the Ropsten testnet, and you can register names via it right now. Any names you register will persist until launch on mainnet, at which point the auction registrar on Ropsten will be deprecated and eventually deleted.
+Once deployed on mainnet, ENS names will be handed out via an auction process, on the '.puffs' top-level domain.
 
 This registrar implements a blind auction, and is described in EIP162_. Names are initially required to be at least 7 characters long.
 
@@ -55,9 +55,9 @@ Before placing a bid, you need to check if the name is available. Run this code 
 
 ::
 
-    ethRegistrar.entries(web3.sha3('name'))[0];
+    puffsRegistrar.entries(web3.sha3('name'))[0];
 
-This will return a single integer between 0 and 5. The full solidity data structure for this can be viewed `here <https://github.com/ethereum/ens/blob/master/contracts/HashRegistrarSimplified.sol#L110>`_ in the Registrar contract. The numbers represent different 'states' a name is currently in.
+This will return a single integer between 0 and 5. The full solidity data structure for this can be viewed `here <https://github.com/puffscoin/ens/blob/master/contracts/HashRegistrarSimplified.sol#L110>`_ in the Registrar contract. The numbers represent different 'states' a name is currently in.
 
 - 0 - Name is available and the auction hasn't started
 - 1 - Name is available and the auction has been started
@@ -70,20 +70,20 @@ If the returned value is `5`, and is in the 'soft launch' is in effect; you can 
 
 ::
 
-    new Date(ethRegistrar.getAllowedTime(web3.sha3('name')) * 1000);
+    new Date(puffsRegistrar.getAllowedTime(web3.sha3('name')) * 1000);
 
 
 To start an auction for a name that's not already up for auction, call `startAuction`:
 
 ::
 
-    ethRegistrar.startAuction(web3.sha3('name'), {from: eth.accounts[0], gas: 100000});
+    puffsRegistrar.startAuction(web3.sha3('name'), {from: puffs.accounts[0], gas: 100000});
 
 You can also start auctions for several names simultaneously, to disguise which name you're actually interested in registering:
 
 ::
 
-    ethRegistrar.startAuctions([web3.sha3('decoy1'), web3.sha3('name'), web3.sha3('decoy2')], {from: eth.accounts[0], gas: 1000000});
+    puffsRegistrar.startAuctions([web3.sha3('decoy1'), web3.sha3('name'), web3.sha3('decoy2')], {from: puffs.accounts[0], gas: 1000000});
 
 Auctions normally run for 5 days: 3 days of bidding and 2 days of reveal phase. When initially deployed, there's a "soft start" phase during which names are released for bidding gradually; this soft start lasts 4 weeks on ropsten, and 13 weeks on mainnet.
 
@@ -91,7 +91,7 @@ When a name is under auction, you can check the end time of the auction as follo
 
 ::
 
-    new Date(ethRegistrar.entries(web3.sha3('name'))[2].toNumber() * 1000)
+    new Date(puffsRegistrar.entries(web3.sha3('name'))[2].toNumber() * 1000)
 
 Placing a bid
 -------------
@@ -105,7 +105,7 @@ To bid on an open auction, you need several pieces of data:
  - The maximum amount you're willing to pay for the name
  - A random 'salt' value
 
-In addition, you need to decide how much Ether you want to deposit with the bid. This must be at least as much as the value of your bid, but can be more, in order to disguise the true value of the bid.
+In addition, you need to decide how much PUFFScoin you want to deposit with the bid. This must be at least as much as the value of your bid, but can be more, in order to disguise the true value of the bid.
 
 First, start by generating a secret value. An easy way to do this is to use random.org_. Store this value somewhere secure - if you lose it, you lose your deposit, and your chance at winning the auction!
 
@@ -113,7 +113,7 @@ Now, you can generate your 'sealed' bid, with the following code:
 
 ::
 
-    var bid = ethRegistrar.shaBid(web3.sha3('name'), eth.accounts[0], web3.toWei(1, 'ether'), web3.sha3('secret'));
+    var bid = puffsRegistrar.shaBid(web3.sha3('name'), puffs.accounts[0], web3.toWei(1, 'puffs'), web3.sha3('secret'));
 
 The arguments are, in order, the name you want to register, the account you are sending the bid from, your maximum bid, and the secret value you generated earlier. Note that the bidding account will become the owner. You will lose funds if you seal with one account and send the bid with another!
 
@@ -121,15 +121,15 @@ Next, submit your bid to the registrar:
 
 ::
 
-    ethRegistrar.newBid(bid, {from: eth.accounts[0], value: web3.toWei(2, 'ether'), gas: 500000});
+    puffsRegistrar.newBid(bid, {from: puffs.accounts[0], value: web3.toWei(2, 'puffs'), gas: 500000});
 
-In the example above, we're sending 2 ether, even though our maximum bid is 1 ether; this is to disguise the true value of our bid. When we reveal our bid later, we will get the extra 1 ether back; the most we can pay for the name is 1 ether, as we specified when generating the bid.
+In the example above, we're sending 2 puffs, even though our maximum bid is 1 puffs; this is to disguise the true value of our bid. When we reveal our bid later, we will get the extra 1 puffs back; the most we can pay for the name is 1 puffs, as we specified when generating the bid.
 
 Now it's a matter of waiting until the reveal period before revealing your bid. Run the command to check the expiration date of the auction again, and make sure to come back in the final 48 hours of the auction:
 
 ::
 
-    new Date(ethRegistrar.entries(web3.sha3('name'))[2].toNumber() * 1000)
+    new Date(puffsRegistrar.entries(web3.sha3('name'))[2].toNumber() * 1000)
 
 Revealing your bid
 ------------------
@@ -140,7 +140,7 @@ To reveal, call the `unsealBid` function with the same values you provided earli
 
 ::
 
-    ethRegistrar.unsealBid(web3.sha3('name'), web3.toWei(1, 'ether'), web3.sha3('secret'), {from: eth.accounts[0], gas: 500000});
+    puffsRegistrar.unsealBid(web3.sha3('name'), web3.toWei(1, 'puffs'), web3.sha3('secret'), {from: puffs.accounts[0], gas: 500000});
 
 The arguments to `unsealBid` have the same order and meaning as those to `shaBid`, described in the bidding step, except that you don't need to supply the account - it's derived from your sending address.
 
@@ -157,13 +157,13 @@ At any time, you can check the current winning bidder with:
 
 ::
 
-    deedContract.at(ethRegistrar.entries(web3.sha3('name'))[1]).owner();
+    deedContract.at(puffsRegistrar.entries(web3.sha3('name'))[1]).owner();
 
 and the value of the current winning bid with
 
 ::
 
-    web3.fromWei(ethRegistrar.entries(web3.sha3('name'))[4], 'ether');
+    web3.fromWei(puffsRegistrar.entries(web3.sha3('name'))[4], 'puffs');
 
 Finalizing the auction
 ----------------------
@@ -172,9 +172,9 @@ Once the auction has completed, it must be finalized in order for the name to be
 
 ::
 
-    ethRegistrar.finalizeAuction(web3.sha3('name'), {from: eth.accounts[0], gas: 500000});
+    puffsRegistrar.finalizeAuction(web3.sha3('name'), {from: puffs.accounts[0], gas: 500000});
 
-Once called, the winning bidder will be refunded the difference between their bid and the next highest bidder. If you're the only bidder, you get back all but 0.01 eth of your bid. The winner is then assigned the name in ENS.
+Once called, the winning bidder will be refunded the difference between their bid and the next highest bidder. If you're the only bidder, you get back all but 0.01 puffs of your bid. The winner is then assigned the name in ENS.
 
 If you are the winning bidder, congratulations!
 
@@ -187,14 +187,14 @@ After finalizing, your account now owns both the name in ENS and the deed in the
 
 As the name owner, your account can manage the name using examples in "Interacting with the ENS registry". For example, you can use :code:`ens.setOwner` to transfer administration of the name to another account. The new name owner can manage that domain and all subdomains now. None of those actions affect your ownership of the deed.
 
-As the deed owner, your account has the right to reset name ownership back to itself at any time, by using :code:`ethRegistrar.finalizeAuction` again. You can also choose to transfer the deed to another account with:
+As the deed owner, your account has the right to reset name ownership back to itself at any time, by using :code:`puffsRegistrar.finalizeAuction` again. You can also choose to transfer the deed to another account with:
 
 ::
 
-    ethRegistrar.transfer(web3.sha3('name'), newDeedOwnerAddress, {from: currentDeedOwnerAddress})
+    puffsRegistrar.transfer(web3.sha3('name'), newDeedOwnerAddress, {from: currentDeedOwnerAddress})
 
 .. CAUTION::
-   Transferring the deed is **irrevocable**. Be sure that you have verified the correct address for the new owner. Additionally, the ether you paid to win the auction will be transferred with the deed to the new owner.
+   Transferring the deed is **irrevocable**. Be sure that you have verified the correct address for the new owner. Additionally, the puffs you paid to win the auction will be transferred with the deed to the new owner.
 
 .. _interacting:
 
@@ -203,7 +203,7 @@ Interacting with the ENS registry
 
 The ENS registry forms the central component of ENS, mapping from hashed names to resolvers, as well as the owners of the names and their TTL (caching time-to-live).
 
-Before you can make any changes to the ENS registry, you need to control an account that has ownership of a name in ENS. To obtain an ENS name on the Ropsten testnet, see :ref:`auctions` for '.eth', or :ref:`fifs` for '.test'. Names on '.test' are temporary, and can be claimed by someone else 28 days later.
+Before you can make any changes to the ENS registry, you need to control an account that has ownership of a name in ENS. To obtain an ENS name, see :ref:`auctions` for '.puffs', or :ref:`fifs` for '.test'. Names on '.test' are temporary, and can be claimed by someone else 28 days later.
 
 Alternately, you can obtain a subdomain from someone else who owns a domain, or :doc:`deploying`. Note that while anyone can deploy their own ENS registry, those names will only be resolvable by users who reference that registry in their code.
 
@@ -214,7 +214,7 @@ You can retrieve the address of a name's owner using the `owner` function:
 
 ::
 
-    > ens.owner(namehash('somename.eth'));
+    > ens.owner(namehash('somename.puffs'));
     "0xa303ddc620aa7d1390baccc8a495508b183fab59"
 
 Getting the resolver for a name
@@ -224,7 +224,7 @@ You can retrieve the address of a name's resolver using the `resolver` function:
 
 ::
 
-    > ens.resolver(namehash('somename.eth'));
+    > ens.resolver(namehash('somename.puffs'));
     "0xc68de5b43c3d980b0c110a77a5f78d3c4c4d63b4"
 
 Setting a name's resolver
@@ -234,21 +234,21 @@ You can set the resolver contract for a name using `setResolver`:
 
 ::
 
-    > ens.setResolver(namehash('somename.eth'), resolverAddress, {from: eth.accounts[0]});
+    > ens.setResolver(namehash('somename.puffs'), resolverAddress, {from: puffs.accounts[0]});
 
 A resolver is any contract that implements the resolver interface specified in EIP137_. You can deploy your own resolver, or you can use a publicly available one; on the mainnet, a simple resolver that supports 'address' records and is usable by anyone is available; ensutils.js exposes it as `publicResolver`. To use it, first set it as the resolver for your name:
 
 ::
 
-    ens.setResolver(namehash('somename.eth'), publicResolver.address, {from: eth.accounts[0]});
+    ens.setResolver(namehash('somename.puffs'), publicResolver.address, {from: puffs.accounts[0]});
 
 Then, call the resolver's `setAddr` method to set the address the name resolves to:
 
 ::
 
-    publicResolver.setAddr(namehash('somename.eth'), eth.accounts[0], {from: eth.accounts[0]})
+    publicResolver.setAddr(namehash('somename.puffs'), puffs.accounts[0], {from: puffs.accounts[0]})
 
-The above example configures 'somename.eth' to resolve to the address of your primary account.
+The above example configures 'somename.puffs' to resolve to the address of your primary account.
 
 Transferring a name
 -------------------
@@ -257,28 +257,28 @@ You can transfer ownership of a name you own in the ENS registry to another acco
 
 ::
 
-    > ens.setOwner(namehash('somename.eth'), newOwner, {from: eth.accounts[0]});
+    > ens.setOwner(namehash('somename.puffs'), newOwner, {from: puffs.accounts[0]});
 
 .. NOTE::
 
-   If the name was acquired through a registrar, such as through a '.eth' auction process, this will not transfer ownership of the locked bid. It will also not perform any administrative tasks that a registrar might want to do.
+   If the name was acquired through a registrar, such as through a '.puffs' auction process, this will not transfer ownership of the locked bid. It will also not perform any administrative tasks that a registrar might want to do.
 
-   In general, to perform a complete transfer of a name acquired through a registrar, that particular registrar should be used as the interface. For the '.eth' registrar, see :ref:`managing-ownership`.
+   In general, to perform a complete transfer of a name acquired through a registrar, that particular registrar should be used as the interface. For the '.puffs' registrar, see :ref:`managing-ownership`.
 
 Creating a subdomain
 --------------------
 
-You can assign ownership of subdomains of any name you own with the `setSubnodeOwner` function. For instance, to create a subdomain 'foo.somename.eth' and set yourself as the owner:
+You can assign ownership of subdomains of any name you own with the `setSubnodeOwner` function. For instance, to create a subdomain 'foo.somename.puffs' and set yourself as the owner:
 
 ::
 
-    > ens.setSubnodeOwner(namehash('somename.eth'), web3.sha3('foo'), eth.accounts[0], {from: eth.accounts[0]});
+    > ens.setSubnodeOwner(namehash('somename.puffs'), web3.sha3('foo'), puffs.accounts[0], {from: puffs.accounts[0]});
 
 Or, to assign someone else as the owner:
 
 ::
 
-    > ens.setSubnodeOwner(namehash('somename.eth'), web3.sha3('foo'), someAccount, {from: eth.accounts[0]});
+    > ens.setSubnodeOwner(namehash('somename.puffs'), web3.sha3('foo'), someAccount, {from: puffs.accounts[0]});
 
 Note the use of `web3.sha3()` instead of `namehash()` when specifying the subdomain being allocated.
 
@@ -292,7 +292,7 @@ Now you're ready to resolve your newly created name. For details how, read :ref:
 Interacting with ENS from a DApp
 --------------------------------
 
-An NPM module, ethereum-ens_, is available to facilitate interacting with the ENS from Javascript-based DApps.
+An NPM module, puffscoin-ens_, is available to facilitate interacting with the ENS from Javascript-based DApps.
 
 Interacting with ENS from a contract
 ------------------------------------
@@ -306,7 +306,7 @@ A Solidity library to facilitate this will be available soon.
 Resolving ENS names
 ===================
 
-This page describes how ENS name resolution works at the contract level. For convenient use in DApps, an NPM package, ethereum-ens_ is available which abstracts away much of the detail and makes name resolution a straightforward process.
+This page describes how ENS name resolution works at the contract level. For convenient use in DApps, an NPM package, puffscoin-ens_ is available which abstracts away much of the detail and makes name resolution a straightforward process.
 
 Step by step
 ------------
@@ -315,7 +315,7 @@ Get the node ID (namehash output) for the name you want to resolve:
 
 ::
 
-    var node = namehash('myname.eth');
+    var node = namehash('myname.puffs');
 
 Ask the ENS registry for the resolver responsible for that node:
 
@@ -342,26 +342,26 @@ This statement is equivalent to all of the above:
 
 ::
 
-    resolverContract.at(ens.resolver(namehash('myname.eth'))).addr(namehash('myname.eth'));
+    resolverContract.at(ens.resolver(namehash('myname.puffs'))).addr(namehash('myname.puffs'));
 
 For convenience, ensutils.js provides a function, `getAddr` that does all of this for you with the default ENS registry:
 
 ::
 
-    getAddr('myname.eth')
+    getAddr('myname.puffs')
 
 .. _reverse:
 
 Reverse name resolution
 =======================
 
-ENS also supports reverse resolution of Ethereum addresses. This allows an account (contract or external) to associate metadata with itself, such as its canonical name - 'Ethereum caller ID' if you will.
+ENS also supports reverse resolution of Puffscoin addresses. This allows an account (contract or external) to associate metadata with itself, such as its canonical name - 'Puffscoin caller ID' if you will.
 
-Reverse records are in the format `<ethereum address>.addr.reverse` - for instance, the official registry would have its reverse records at `314159265dd8dbb310642f98f50c066173c1259b.addr.reverse`.
+Reverse records are in the format `<puffscoin address>.addr.reverse` - for instance, the official registry would have its reverse records at `314159265dd8dbb310642f98f50c066173c1259b.addr.reverse`.
 
 `addr.reverse` has a registrar with `claim`, `claimWithResolver`, and `setName` functions.
 
-The claim function takes one argument, the Ethereum address that should own the reverse record.
+The claim function takes one argument, the PUFFScoin address that should own the reverse record.
 
 This permits a very simple pattern for contracts that wish to delegate control of their reverse record to their creator; they simply need to add this function call to their constructor:
 
@@ -376,7 +376,7 @@ Call the `claim` function on the `reverseRegistrar` object:
 
 ::
 
-    reverseRegistrar.claim(eth.accounts[0], {from: eth.accounts[0]});
+    reverseRegistrar.claim(puffs.accounts[0], {from: puffs.accounts[0]});
     
 After that transaction is mined, the appropriate reverse record is now owned by your account, and, you can deploy a resolver and set records on it; see :ref:`interacting` for details.
 
@@ -384,7 +384,7 @@ Alternately, you can claim and set the resolver record in one operation:
 
 ::
 
-    reverseRegistrar.claimWithResolver(eth.accounts[0], publicResolver.address, {from: eth.accounts[0]});
+    reverseRegistrar.claimWithResolver(puffs.accounts[0], publicResolver.address, {from: puffs.accounts[0]});
 
 Setting up a reverse name for your address
 ------------------------------------------
@@ -393,14 +393,7 @@ If you just want to set up a reverse resolver with a name record, a quick conven
 
 ::
 
-    reverseRegistrar.setName('myname.eth', {from: eth.accounts[0]});
+    reverseRegistrar.setName('myname.puffs', {from: puffs.accounts[0]});
 
 This function points your reverse record at a default resolver, then sets the name record on that resolver for you - everything you need to set up 'caller ID' in a single transaction.
 
-.. _ethereum-ens: https://www.npmjs.com/package/ethereum-ens
-.. _EIP137: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md
-.. _`ENS registry interface`: https://github.com/ethereum/ens/blob/master/contracts/ENS.sol
-.. _EIP162: https://github.com/ethereum/EIPs/issues/162
-.. _ensutils.js: https://github.com/ethereum/ens/blob/master/ensutils.js
-.. _ensutils-testnet.js: https://github.com/ethereum/ens/blob/master/ensutils-testnet.js
-.. _random.org: https://www.random.org/strings/?num=1&len=20&digits=on&upperalpha=on&loweralpha=on&unique=off&format=html&rnd=new
