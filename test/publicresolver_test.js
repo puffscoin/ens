@@ -5,12 +5,12 @@ var Promise = require('bluebird');
 var utils = require('./utils.js');
 Promise.promisifyAll(utils);
 var web3 = utils.web3;
-Promise.promisifyAll(web3.eth);
+Promise.promisifyAll(web3.puffs);
 
 var accounts = null;
 
 before(function() {
-	return web3.eth.getAccountsAsync()
+	return web3.puffs.getAccountsAsync()
 		.then(acct => accounts = acct);
 });
 
@@ -30,7 +30,7 @@ describe('PublicResolver', function() {
 			.then(_ens => {
 				ens = _ens;
 				return new Promise(function(resolve, reject) {
-					web3.eth.contract(JSON.parse(resolverCode.interface)).new(
+					web3.puffs.contract(JSON.parse(resolverCode.interface)).new(
 						ens.address,
 						{
 							from: accounts[0],
@@ -58,7 +58,7 @@ describe('PublicResolver', function() {
 	describe('fallback function', function() {
 
 		it('forbids calls to the fallback function with 0 value', function() {
-			return web3.eth.sendTransactionAsync({
+			return web3.puffs.sendTransactionAsync({
 					from: accounts[0],
 					to: resolver.address,
 					gas: 3000000
@@ -70,7 +70,7 @@ describe('PublicResolver', function() {
 		});
 
 		it('forbids calls to the fallback function with 1 value', function() {
-			return web3.eth.sendTransactionAsync({
+			return web3.puffs.sendTransactionAsync({
 					from: accounts[0],
 					to: resolver.address,
 					gas: 3000000,
