@@ -7,7 +7,7 @@ var web3 = utils.web3;
 var accounts = null;
 
 before(function(done) {
-    web3.eth.getAccounts(function(err, acct) {
+    web3.puffs.getAccounts(function(err, acct) {
         accounts = acct
         done();
     });
@@ -28,7 +28,7 @@ describe('FIFSRegistrar', function() {
         async.series([
             function(done) { ens = utils.deployENS(accounts[0], done); },
             function(done) {
-                registrar = web3.eth.contract(JSON.parse(registrarCode.interface)).new(
+                registrar = web3.puffs.contract(JSON.parse(registrarCode.interface)).new(
                     ens.address,
                     0,
                     {
