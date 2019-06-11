@@ -6,13 +6,13 @@ var Promise = require('bluebird');
 var utils = require('./utils.js');
 Promise.promisifyAll(utils);
 var web3 = utils.web3;
-Promise.promisifyAll(web3.eth);
+Promise.promisifyAll(web3.puffs);
 
 var accounts = null;
 var node = null;
 
 before(function() {
-    return web3.eth.getAccountsAsync()
+    return web3.puffs.getAccountsAsync()
         .then(function(acct) {
             accounts = acct
             node = namehash(accounts[0].slice(2).toLowerCase() + ".addr.reverse");
@@ -44,7 +44,7 @@ describe('ReverseRegistrar', function() {
             .then(function(_ens) {
                 ens = Promise.promisifyAll(_ens);
                 return new Promise(function(resolve, reject) {
-                    web3.eth.contract(JSON.parse(resolverCode.interface)).new(
+                    web3.puffs.contract(JSON.parse(resolverCode.interface)).new(
                         ens.address,
                         {
                             from: accounts[0],
@@ -63,7 +63,7 @@ describe('ReverseRegistrar', function() {
             })
             .then(function(resolver) {
                 return new Promise(function(resolve, reject) {
-                    web3.eth.contract(JSON.parse(registrarCode.interface)).new(
+                    web3.puffs.contract(JSON.parse(registrarCode.interface)).new(
                         ens.address,
                         resolver.address,
                         {
