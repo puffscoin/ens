@@ -125,7 +125,7 @@ A Javascript library, puffscoin-ens_, is available to facilitate reading and wri
 Normalising and validating names
 ================================
 
-Before a name can be converted to a node hash using :ref:`namehash`, the name must first be normalised and checked for validity - for instance, converting `fOO.eth` into `foo.eth`, and prohibiting names containing forbidden characters such as underscores. It is crucial that all applications follow the same set of rules for normalisation and validation, as otherwise two users entering the same name on different systems may resolve the same human-readable name into two different ENS names.
+Before a name can be converted to a node hash using :ref:`namehash`, the name must first be normalised and checked for validity - for instance, converting `fOO.puffs` into `foo.puffs`, and prohibiting names containing forbidden characters such as underscores. It is crucial that all applications follow the same set of rules for normalisation and validation, as otherwise two users entering the same name on different systems may resolve the same human-readable name into two different ENS names.
 
 Applications using ENS and processing human-readable names must follow UTS46_ for normalisation and validation. Processing should be done with non-transitional rules, and with `UseSTD3ASCIIRules=true`.
 
@@ -143,7 +143,7 @@ User agents and other software that display names to users should take counterme
 .. _EIP181: https://github.com/ethereum/EIPs/issues/181
 .. _EIP205: https://github.com/ethereum/EIPs/pull/205
 .. _EIP619: https://github.com/ethereum/EIPs/pull/619
-.. _ethereum-ens: https://www.npmjs.com/package/ethereum-ens
+.. _puffscoin-ens: https://www.npmjs.com/package/puffscoin-ens
 .. _UTS46: http://unicode.org/reports/tr46/
 .. _`homoglyph attack`: https://en.wikipedia.org/wiki/Internationalized_domain_name#ASCII_spoofing_concerns
 .. _`Chromium's IDNA strategy`: https://www.chromium.org/developers/design-documents/idn-in-google-chrome
