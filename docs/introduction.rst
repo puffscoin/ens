@@ -11,7 +11,7 @@ Overview
 
 The primary goal of PUFFScoin-ENS is to resolve human-readable names, like 'myname.puffs', into machine-readable identifiers, including PUFFScoin addresses, Swarm and IPFS content hashes, and other identifiers. A secondary purpose is to provide metadata about names, such as ABIs for contracts, and whois information for users.
 
-PUFFScoin-ENS has similar goals to DNS, the Internet's Domain Name Service, but has significantly different architecture, due to the capabilities and constraints provided by the Ethereum blockchain. Like DNS, PUFFScoin-ENS operates on a system of dot-separated hierarchial names called domains, with the owner of a domain having full control over the distribution of subdomains. 
+PUFFScoin-ENS has similar goals to DNS, the Internet's Domain Name Service, but has significantly different architecture, due to the capabilities and constraints provided by the PUFFScoin blockchain. Like DNS, PUFFScoin-ENS operates on a system of dot-separated hierarchial names called domains, with the owner of a domain having full control over the distribution of subdomains. 
 
 Top-level domains, such as '.puffs' are owned by smart contracts called registrars, which specify rules governing the allocation of their subdomains. Anyone may, by following the rules imposed by these registrar contracts, obtain ownership of a second-level domain for their own use.
 
@@ -38,7 +38,7 @@ The ENS registry is deliberately straightforward, and exists only to map from a 
 
 Resolvers are responsible for the actual process of translating names into addresses. Any contract that implements the relevant standards may act as a resolver in ENS. General-purpose resolver implementations are offered for users whose requirements are straightforward, such as serving an infrequently changed address for a name.
 
-Each record type - Ethereum address, Swarm content hash, and so forth - defines a method or methods that a resolver must implement in order to provide records of that kind. New record types may be defined at any time via the EIP standardisation process, with no need to make changes to the ENS registry or to existing resolvers in order to support them.
+Each record type - PUFFScoin address, Swarm content hash, and so forth - defines a method or methods that a resolver must implement in order to provide records of that kind. New record types may be defined at any time via the EIP standardisation process, with no need to make changes to the ENS registry or to existing resolvers in order to support them.
 
 .. _namehash:
 
@@ -102,4 +102,4 @@ Resources
  .. _0xe7410170f87102df0055eb195163a03b7f2bff4a: https://rinkeby.etherscan.io/address/0xe7410170f87102df0055eb195163a03b7f2bff4a
  .. _EIP137: https://github.com/ethereum/EIPs/issues/137
  .. _EIP162: https://github.com/ethereum/EIPs/issues/162
- .. _ethereum-ens: https://www.npmjs.com/package/ethereum-ens
+ .. _puffscoin-ens: https://www.npmjs.com/package/puffscoin-ens
