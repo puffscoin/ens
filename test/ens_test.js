@@ -7,7 +7,7 @@ var web3 = utils.web3;
 var accounts = null;
 
 before(function(done) {
-	web3.eth.getAccounts(function(err, acct) {
+	web3.puffs.getAccounts(function(err, acct) {
 		accounts = acct
 		done();
 	});
@@ -22,7 +22,7 @@ describe('ENS.lll', function() {
 });
 
 function getEventsForTx(event, txid, cb) {
-	web3.eth.getTransaction(txid, function(err, tx) {
+	web3.puffs.getTransaction(txid, function(err, tx) {
 		if (err != null) {
 			cb(err, null);
 		} else {
@@ -41,7 +41,7 @@ function ensTests(label, deploy) {
 	});
 
 	after(function(done) {
-		async.map(txids, web3.eth.getTransactionReceipt, function(err, receipts) {
+		async.map(txids, web3.puffs.getTransactionReceipt, function(err, receipts) {
 			var gas = 0;
 			for(var i = 0; i < receipts.length; i++)
 				gas += receipts[i].gasUsed - 21000;
