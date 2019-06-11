@@ -20,32 +20,32 @@ If this line returns a date earlier than the current date, the name is available
 
 ::
 
-    Registrar.register(web3.sha3('myname'), eth.accounts[0], {from: eth.accounts[0]})
+    Registrar.register(web3.sha3('myname'), puffs.accounts[0], {from: puffs.accounts[0]})
 
 Next, tell the PUFFScoin-ENS registry to use the public resolver for your name:
 
 ::
 
-    ens.setResolver(namehash('myname.puffs'), publicResolver.address, {from: eth.accounts[0]});
+    ens.setResolver(namehash('myname.puffs'), publicResolver.address, {from: puffs.accounts[0]});
 
 Once that transaction is mined, tell the resolver to resolve that name to your account:
 
 ::
 
-    publicResolver.setAddr(namehash('myname.puffs'), eth.accounts[0], {from: eth.accounts[0]});
+    publicResolver.setAddr(namehash('myname.puffs'), puffs.accounts[0], {from: puffs.accounts[0]});
 
 ...or any other address:
 
 ::
 
-    publicResolver.setAddr(namehash('myname.puffs'), '0x1234...', {from: eth.accounts[0]});
+    publicResolver.setAddr(namehash('myname.puffs'), '0x1234...', {from: puffs.accounts[0]});
 
 If you want, create a subdomain and do the whole thing all over again:
 
 ::
 
-    ens.setSubnodeOwner(namehash('myname.puffs'), web3.sha3('whatis'), eth.accounts[1], {from: eth.accounts[0]});
-    ens.setResolver(namehash('foo.myname.puffs'), publicResolver.address, {from: eth.accounts[1]});
+    ens.setSubnodeOwner(namehash('myname.puffs'), web3.sha3('whatis'), puffs.accounts[1], {from: puffs.accounts[0]});
+    ens.setResolver(namehash('foo.myname.puffs'), publicResolver.address, {from: puffs.accounts[1]});
     ...
 
 Finally, you can resolve your newly created name:
@@ -60,5 +60,5 @@ which is shorthand for:
 
     resolverContract.at(ens.resolver(namehash('myname.puffs'))).addr(namehash('myname.puffs'))
 
-.. _ensutils.js: https://github.com/ethereum/ens/blob/master/ensutils.js
-.. _ensutils-testnet.js: https://github.com/ethereum/ens/blob/master/ensutils-testnet.js
+.. _ensutils.js: https://github.com/puffscoin/ens/blob/master/ensutils.js
+.. _ensutils-testnet.js: https://github.com/puffscoin/ens/blob/master/ensutils-testnet.js
