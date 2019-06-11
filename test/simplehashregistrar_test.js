@@ -9,7 +9,7 @@ var web3 = utils.web3;
 var accounts = null;
 
 before(function(done) {
-	web3.eth.getAccounts(function(err, acct) {
+	web3.puffs.getAccounts(function(err, acct) {
 		accounts = acct
 		done();
 	});
@@ -59,7 +59,7 @@ describe('SimpleHashRegistrar', function() {
 		async.series([
 			function(done) { ens = utils.deployENS(accounts[0], done); },
 			function(done) {
-				registrar = web3.eth.contract(registrarABI).new(
+				registrar = web3.puffs.contract(registrarABI).new(
 				    ens.address,
 				    dotPuffs,
 				    0,
@@ -76,7 +76,7 @@ describe('SimpleHashRegistrar', function() {
 				   });
 			},
 			function(done) {
-				throwingBidder = web3.eth.contract([{"inputs":[],"payable":false,"type":"constructor"}]).new(
+				throwingBidder = web3.puffs.contract([{"inputs":[],"payable":false,"type":"constructor"}]).new(
 					{
 						from: accounts[0],
 						data: "0x60606040523415600b57fe5b5b5b5b603380601b6000396000f30060606040525bfe00a165627a7a72305820439539138917e1fca55719c0d3bb351280d3d8db3698b096c8ce05eb72d74c1e0029",
@@ -174,7 +174,7 @@ describe('SimpleHashRegistrar', function() {
 			function(done) { 
 				registrar.getAllowedTime(web3.sha3('puffscoin'), function(err, result){ 
 					assert.equal(err, null, err);
-					// 'ethereum' should be available in 18 days
+					// 'puffscoin' should be available in 18 days
 					assert.equal(Math.round((Number(result)-registryStarted)/days(1)), 18);
 					done();
 				});
@@ -313,7 +313,7 @@ describe('SimpleHashRegistrar', function() {
 			function(done) {
 				registrar.sealedBids(accounts[0], bid, function(err, deedAddress) {
 					assert.equal(err, null, err);
-					web3.eth.getBalance(deedAddress, function(err, balance) {
+					web3.puffs.getBalance(deedAddress, function(err, balance) {
 						assert.equal(err, null, err);
 						assert.equal(balance.toNumber(), 2e18);
 						done();
@@ -354,7 +354,7 @@ describe('SimpleHashRegistrar', function() {
 			// Save initial balances
 			function(done) {
 				async.each(bidData, function(bid, done) {
-					web3.eth.getBalance(bid.account, function(err, balance){
+					web3.puffs.getBalance(bid.account, function(err, balance){
 						bid.startingBalance = balance.toFixed();
 						done();
 					});
@@ -444,7 +444,7 @@ describe('SimpleHashRegistrar', function() {
 					assert.equal(result[0], 2); // status == Owned
 					assert.equal(result[3], 1.5e18); // value = 1.5 puffscoin
 					assert.equal(result[4], 2e18); // highestBid = 2 puffscoin
-					var deed = web3.eth.contract(deedABI).at(result[1]);
+					var deed = web3.puffs.contract(deedABI).at(result[1]);
 					async.series([
 						// Check the owner is correct
 						function(done) {
@@ -464,7 +464,7 @@ describe('SimpleHashRegistrar', function() {
 						},
 						// Check the balance is correct
 						function(done) {
-							web3.eth.getBalance(result[1], function(err, balance) {
+							web3.puffs.getBalance(result[1], function(err, balance) {
 								assert.equal(err, null, err);
 								assert.equal(balance.toNumber(), bidData[2].value);
 								done();
@@ -484,7 +484,7 @@ describe('SimpleHashRegistrar', function() {
 			// Check balances
 			function(done) {
 				async.each(bidData, function(bid, done) {
-					web3.eth.getBalance(bid.account, function(err, balance){
+					web3.puffs.getBalance(bid.account, function(err, balance){
 						var spentFee = Math.floor(10000*(bid.startingBalance - balance.toFixed()) / Math.min(bid.value, bid.deposit))/10000;
 						console.log('\t Bidder #' + bid.salt, bid.description + '. Spent:', 100*spentFee + '%; Expected:', 100*bid.expectedFee + '%;');
 						assert.equal(spentFee, bid.expectedFee);
@@ -494,7 +494,7 @@ describe('SimpleHashRegistrar', function() {
 			},
 			// Check the owner is set in ENS
 			function(done) {
-				ens.owner(nameDotEth, function(err, owner) {
+				ens.owner(nameDotPuffs, function(err, owner) {
 					assert.equal(err, null, err);
 					assert.equal(owner, accounts[1]);
 					done();
@@ -721,7 +721,7 @@ describe('SimpleHashRegistrar', function() {
 		let owner = accounts[1];
 		let notOwner = accounts[0];
 
-		eth = Promise.promisifyAll(web3.eth);
+		puffs = Promise.promisifyAll(web3.puffs);
 		advanceTimeAsync(launchLength)
 			.then((done) => registrar.startAuctionAsync(web3.sha3('name'), {from: owner, gas: 100000}))
 			.then((done) => registrar.shaBidAsync(web3.sha3('name'), notOwner, 1e18, 1))
@@ -748,17 +748,17 @@ describe('SimpleHashRegistrar', function() {
 			.then((done) => registrar.releaseDeedAsync(web3.sha3('name'), {from: notOwner}))
 			// Other user cannot release it
 			.then((done) => assert.fail("Expected exception"), assertIsContractError)
-			.then((result) => eth.getBalanceAsync(owner))
+			.then((result) => puffs.getBalanceAsync(owner))
 			.then((balance) => { winnerBalance = balance.toFixed(); })
 			.then((done) => registrar.releaseDeedAsync(web3.sha3('name'), {from: owner}))
 			.then((done) => registrar.entriesAsync(web3.sha3('name')))
 			// Name should be available
 			.then((result) => assert.equal(result[0], 0))		
-			.then((result) => eth.getBalanceAsync(owner))
+			.then((result) => puffs.getBalanceAsync(owner))
 			.then((balance) => {
-				let returnedEther = web3.fromWei(Number(balance.toFixed() - winnerBalance), 'puffs');
-				console.log('\t Name released and', returnedEther, 'PUFFS returned to deed owner');
-				assert.equal(1 - returnedEther < 0.01, true);
+				let returnedPuffs = web3.fromWei(Number(balance.toFixed() - winnerBalance), 'puffs');
+				console.log('\t Name released and', returnedPuffs, 'PUFFS returned to deed owner');
+				assert.equal(1 - returnedPuffs < 0.01, true);
 			})
 			.catch((err) => assert.fail("No exception expected here, but got " + err.toString()))
 			.then((done) => registrar.releaseDeedAsync(web3.sha3('name'), {from: owner}))
@@ -1017,11 +1017,11 @@ describe('SimpleHashRegistrar', function() {
 	it('invalidates short names', function(done) {
 		bid = {account: accounts[0], value: 1.5e18, deposit: 2e18, salt: 1, description: 'bidded before invalidation' };
 		let invalidator = {account: accounts[2]};
-		eth = Promise.promisifyAll(web3.eth);
-		eth.getBalanceAsync(bid.account)
+		puffs = Promise.promisifyAll(web3.puffs);
+		puffs.getBalanceAsync(bid.account)
 			// Store balances
 			.then((balance) => { bid.startingBalance = balance.toFixed(); })
-			.then((result) => eth.getBalanceAsync(invalidator.account))
+			.then((result) => puffs.getBalanceAsync(invalidator.account))
 			.then((balance) => { invalidator.startingBalance = balance.toFixed(); })
 			// Advance time past soft launch
 			.then((result) => advanceTimeAsync(launchLength))
@@ -1045,20 +1045,20 @@ describe('SimpleHashRegistrar', function() {
 			.then((result) => registrar.entriesAsync(web3.sha3('name')))
 			.then((entry) => { assert.equal(entry[0], 0); })
 			// Check account balances
-			.then((result) => eth.getBalanceAsync(bid.account))
+			.then((result) => puffs.getBalanceAsync(bid.account))
 			.then((balance) => {
 				var spentFee = Math.floor(web3.fromWei(bid.startingBalance - balance.toFixed(), 'finney'));
 				console.log('\t Bidder #'+ bid.salt, bid.description, 'spent:', spentFee, 'finney;');
 				assert.equal(spentFee, 5);
 			})
-			.then((result) => eth.getBalanceAsync(invalidator.account))
+			.then((result) => puffs.getBalanceAsync(invalidator.account))
 			.then((balance) => {
 					let fee = Math.floor(web3.fromWei(balance.toFixed() - invalidator.startingBalance, 'finney'));
 					console.log('\t Invalidator got: ', fee, 'finney');
 					assert.equal(fee, 4);
 			})
 			// check the owner field was cleared.
-			.then((result) => ens.ownerAsync(nameDotEth))
+			.then((result) => ens.ownerAsync(nameDotPuffs))
 			.then((owner) => {
 				assert.equal(owner, 0);
 			})
@@ -1088,15 +1088,15 @@ describe('SimpleHashRegistrar', function() {
 			.then((result) => registrar.finalizeAuctionAsync(web3.sha3('name'), {from: bid.account, gas: 500000}))
 
 			// Set the resolver record in ENS
-			.then((result) => ens.setResolverAsync(nameDotEth, accounts[0], {from: bid.account}))
+			.then((result) => ens.setResolverAsync(nameDotPuffs, accounts[0], {from: bid.account}))
 
 			// Invalidate the name
 			.then((result) => registrar.invalidateNameAsync('name', {from: invalidator.account, gas: 500000}))
 
 			// Check owner and resolver are both zeroed
-			.then((result) => ens.ownerAsync(nameDotEth))
+			.then((result) => ens.ownerAsync(nameDotPuffs))
 			.then((owner) => { assert.equal(owner, 0); })
-			.then((result) => ens.resolverAsync(nameDotEth))
+			.then((result) => ens.resolverAsync(nameDotPuffs))
 			.then((resolver) => { assert.equal(resolver, 0); })
 			.asCallback(done);
 	});
@@ -1156,9 +1156,9 @@ describe('SimpleHashRegistrar', function() {
 			},
 			// Deploy a new registrar
 			function(done) {
-				newRegistrar = web3.eth.contract(registrarABI).new(
+				newRegistrar = web3.puffs.contract(registrarABI).new(
 				    ens.address,
-				    dotEth,
+				    dotPuffs,
 				    0,
 				    {
 				    	from: accounts[0],
@@ -1181,7 +1181,7 @@ describe('SimpleHashRegistrar', function() {
 			},
 			// Check the deed was transferred as expected
 			function(done) {
-				web3.eth.contract(deedABI).at(deedAddress).registrar(function(err, owner) {
+				web3.puffs.contract(deedABI).at(deedAddress).registrar(function(err, owner) {
 					assert.equal(err, null, err);
 					assert.equal(newRegistrar.address, owner);
 					done();
@@ -1275,7 +1275,7 @@ describe('SimpleHashRegistrar', function() {
 			},
 			// Check the new owner was set on the deed
 			function(done) {
-				web3.eth.contract(deedABI).at(deedAddress).owner(function(err, owner) {
+				web3.puffs.contract(deedABI).at(deedAddress).owner(function(err, owner) {
 					assert.equal(err, null, err);
 					assert.equal(accounts[1], owner);
 					done();
@@ -1283,7 +1283,7 @@ describe('SimpleHashRegistrar', function() {
 			},
 			// Check the new owner was set in ENS
 			function(done) {
-				ens.owner(nameDotEth, function(err, owner) {
+				ens.owner(nameDotPuffs, function(err, owner) {
 					assert.equal(err, null, err);
 					assert.equal(accounts[1], owner);
 					done();
@@ -1302,7 +1302,7 @@ describe('SimpleHashRegistrar', function() {
 			function(done) { advanceTime(launchLength, done); },
 			// Save initial balances
 			function(done) {
-				web3.eth.getBalance(bid.account, function(err, balance){
+				web3.puffs.getBalance(bid.account, function(err, balance){
 					bid.startingBalance = balance.toFixed();
 					done();
 				});
@@ -1348,7 +1348,7 @@ describe('SimpleHashRegistrar', function() {
 				registrar.sealedBids(bid.account, bid.sealedBid, function(err, deedAddress) {
 					assert.equal(err, null, err);
 					// Deploy a self-destructing contract to top up the account
-					web3.eth.contract([{"inputs":[{"name":"target","type":"address"}],"payable":true,"type":"constructor"}]).new(
+					web3.puffs.contract([{"inputs":[{"name":"target","type":"address"}],"payable":true,"type":"constructor"}]).new(
 					    deedAddress,
 					    {
 					    	from: accounts[0],
@@ -1360,7 +1360,7 @@ describe('SimpleHashRegistrar', function() {
 								assert.equal(err, null, err);
 								if (contract.address != undefined) {
 									// Check the balance was topped up.
-									web3.eth.getBalance(deedAddress, function(err, balance) {
+									web3.puffs.getBalance(deedAddress, function(err, balance) {
 										assert.equal(err, null, err);
 										assert.equal(balance, 3000000000000000000);
 										done();
@@ -1379,10 +1379,10 @@ describe('SimpleHashRegistrar', function() {
 			},
 			// Check balance
 			function(done) {
-				web3.eth.getBalance(bid.account, function(err, balance){
+				web3.puffs.getBalance(bid.account, function(err, balance){
 					var spentFee = Math.floor(web3.fromWei(bid.startingBalance - balance.toFixed(), 'finney'));
 					console.log('\t Bidder #'+ bid.salt, bid.description, 'spent:', spentFee, 'finney;');
-					// Bid is considered equal to 1 ether and loses, costing 0.5%
+					// Bid is considered equal to 1 puffs and loses, costing 0.5%
 					assert.equal(spentFee, 5);
 					done();
 				});
@@ -1402,7 +1402,7 @@ describe('SimpleHashRegistrar', function() {
 			},
 			// Check the new owner was set on the deed
 			function(done) {
-				web3.eth.contract(deedABI).at(deedAddress).owner(function(err, owner) {
+				web3.puffs.contract(deedABI).at(deedAddress).owner(function(err, owner) {
 					console.log('\t',bid.account == owner? "underfunded bid wins" : "underfunded bid loses");
 					assert.equal(err, null, err);
 					assert.equal(accounts[1], owner);
@@ -1419,7 +1419,7 @@ describe('SimpleHashRegistrar', function() {
 			function(done) { advanceTime(launchLength, done); },
 			// Save initial balances
 			function(done) {
-				web3.eth.getBalance(bid.account, function(err, balance){
+				web3.puffs.getBalance(bid.account, function(err, balance){
 					bid.startingBalance = balance.toFixed();
 					done();
 				});
@@ -1481,22 +1481,22 @@ describe('SimpleHashRegistrar', function() {
 
 		// Set the node owners and resolvers
 		ens.setSubnodeOwnerAsync(0, web3.sha3('eth'), accounts[0], {from: accounts[0]})
-			.then(() => ens.setSubnodeOwnerAsync(dotEth, web3.sha3('name'), accounts[0], {from: accounts[0]}))
-			.then(() => ens.setSubnodeOwnerAsync(nameDotEth, web3.sha3('subdomain'), accounts[0], {from: accounts[0]}))
-			.then(() => ens.setResolverAsync(nameDotEth, accounts[0], {from: accounts[0]}))
-			.then(() => ens.setResolverAsync(subdomainDotNameDotEth, accounts[0], {from: accounts[0]}))
+			.then(() => ens.setSubnodeOwnerAsync(dotPuffs, web3.sha3('name'), accounts[0], {from: accounts[0]}))
+			.then(() => ens.setSubnodeOwnerAsync(nameDotPuffs, web3.sha3('subdomain'), accounts[0], {from: accounts[0]}))
+			.then(() => ens.setResolverAsync(nameDotPuffs, accounts[0], {from: accounts[0]}))
+			.then(() => ens.setResolverAsync(subdomainDotNameDotPuffs, accounts[0], {from: accounts[0]}))
 			// Set the registrar as the owner of .eth again
-			.then(() => ens.setOwnerAsync(dotEth, registrar.address, {from: accounts[0]}))
+			.then(() => ens.setOwnerAsync(dotPuffs, registrar.address, {from: accounts[0]}))
 			// Call the eraseNode method
 			.then(() => registrar.eraseNodeAsync([web3.sha3("subdomain"), web3.sha3("name")], {from: accounts[1]}))
 			// Check that the owners and resolvers have all been set to zero
-			.then(() => ens.resolverAsync(subdomainDotNameDotEth))
+			.then(() => ens.resolverAsync(subdomainDotNameDotPuffs))
 			.then((resolver) => assert.equal(resolver, 0))
-			.then(() => ens.ownerAsync(subdomainDotNameDotEth))
+			.then(() => ens.ownerAsync(subdomainDotNameDotPuffs))
 			.then((owner) => assert.equal(owner, 0))
-			.then(() => ens.resolverAsync(nameDotEth))
+			.then(() => ens.resolverAsync(nameDotPuffs))
 			.then((resolver) => assert.equal(resolver, 0))
-			.then(() => ens.ownerAsync(nameDotEth))
+			.then(() => ens.ownerAsync(nameDotPuffs))
 			.then((owner) => assert.equal(owner, 0))
 			.asCallback(done);
 	});
