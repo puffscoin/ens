@@ -14,12 +14,12 @@ The DApp and the twitter bot have built in lists of common names, drawn from an 
 
 What is the disguise amount / extra amount?
 -------------------------------------------
-Although it's difficult for someone to determine what name you are bidding on, in some circumstances it's possible to either determine the exact name, or narrow it down to one of several. The disguise amount allows you to send extra puffs along with your bid, to disguise the true amount of your bid. This ether is returned to you as soon as you reveal your bid.
+Although it's difficult for someone to determine what name you are bidding on, in some circumstances it's possible to either determine the exact name, or narrow it down to one of several. The disguise amount allows you to send extra puffs along with your bid, to disguise the true amount of your bid. This puffscoin is returned to you as soon as you reveal your bid.
 
 Which wallets and DApps support ENS so far?
 -------------------------------------------
 
-MyEtherWallet supports both registering names via the auction process and sending funds and interacting with contracts identified by their names. Our goal is to ensure that either MEW allows for this process along the PUFFScoin network aswell, or we will provide PUFFScoin specific MEW build with this support.
+MyPuffsWallet  will support both registering names via the auction process and sending funds and interacting with contracts identified by their names.
 
 Metamask supports sending funds to ENS names, and either through branded adaptation or via direct integration, we hope to provide .puffs support via MetaMask or attenuant service..
 
@@ -133,7 +133,7 @@ Just like the current model, this “fee” would not go to the PUFFScoin Core D
 
 Another very possible option creating some sort of dispute resolution process for names, to ensure the “principle of least surprise” but this is a controversial idea and there are no clear ideas on how this process could be achieved in a fair way without risks of centralization and abuse of power.
 
-.. _here : https://github.com/ethereum/ens/blob/13f3aa431f1e90ace80c510251a906f018fc7cc1/contracts/HashRegistrarSimplified.sol#L263
+https://github.com/puffscoin/ens/blob/13f3aa431f1e90ace80c510251a906f018fc7cc1/contracts/HashRegistrarSimplified.sol#L263
 
 Can the bids be revealed during the auction period?
 ---------------------------------------------------
