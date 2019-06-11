@@ -5,7 +5,7 @@ var Promise = require('bluebird');
 var utils = require('./utils.js');
 Promise.promisifyAll(utils);
 var web3 = utils.web3;
-Promise.promisifyAll(web3.eth);
+Promise.promisifyAll(web3.puffs);
 
 describe('FIFSRegistrar', function() {
 	var registrarCode = null;
@@ -14,7 +14,7 @@ describe('FIFSRegistrar', function() {
 	var accounts = null;
 
 	before(function() {
-		return web3.eth.getAccountsAsync()
+		return web3.puffs.getAccountsAsync()
 			.then(acct => accounts = acct);
 	});
 
@@ -29,7 +29,7 @@ describe('FIFSRegistrar', function() {
 			.then(function(_ens) {
 				ens = _ens;
 				return utils.promisifyContractFactory(
-						web3.eth.contract(JSON.parse(registrarCode.interface)))
+						web3.puffs.contract(JSON.parse(registrarCode.interface)))
 					.newAsync(
 						ens.address,
 						0,
